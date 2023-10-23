@@ -2,7 +2,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace QuizWeb.Models;
 
-public class Theme
+public class Theme : BaseModel
 {
     [Key]
     public int Id { get; set; }

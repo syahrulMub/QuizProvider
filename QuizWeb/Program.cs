@@ -1,20 +1,21 @@
-using System;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
-using static QuizWeb.Data.ApplicationDbContext;
+using QuizWeb.Data;
+using QuizWeb.DatabaseServices;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddMvc();
 
-var ConnectionString = builder.Configuration.GetConnectionString("PostgreSql");
-//add db context
+var ConnectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+//add database
 builder.Services.AddDbContext<DatabaseContext>(options =>
 {
-    options.UseNpgsql(ConnectionString);
+    options.UseSqlite(ConnectionString);
 });
+builder.Services.AddScoped<IDatabaseServices, DatabaseServices>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using QuizWeb.Constant;
 namespace QuizWeb.Models;
 
-public class Quiz
+public class Quiz : BaseModel
 {
     [Key]
     public int Id { get; set; }

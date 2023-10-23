@@ -13,5 +13,11 @@ public enum SchoolClassEnum
 {
     SD,
     SMP,
-    SMA
+    SMA,
+    General
+}
+public enum QuestionTypeEnum
+{
+    MultipleChoice,
+    ShortAnswer
 }
