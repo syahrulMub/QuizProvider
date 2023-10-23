@@ -1,0 +1,12 @@
+{
+    "version": "0.0.1",
+    "configurations": [
+        {
+            "name": "Start Dev",
+            "type": "PowerShell",
+            "request": "launch",
+            "script": "${workspaceFolder}/start-dev.cmd",
+            "cwd": "${cwd}"
+        }
+    ]
+}

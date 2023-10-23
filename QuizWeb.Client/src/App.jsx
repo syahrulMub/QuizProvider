@@ -14,24 +14,39 @@ export default class App extends Component {
 
     static renderThemesTable(themes) {
         return (
-            <table className='table table-striped' aria-labelledby='tabelLabel'>
-                <thead>
-                    <tr>
-                        <th>Theme Name</th>
-                        <th>Created Date</th>
-                        <th>Modifier Date</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {themes.map((theme) => (
-                        <tr key={theme.id}>
-                            <td>{theme.themeName}</td>
-                            <td>{theme.createDate}</td>
-                            <td>{theme.modifierDate}</td>
+            <div className="overflow-x-auto rounded-lg border border-gray-200">
+                <table className="min-w-full divide-y-2 divide-gray-200 bg-white text-sm">
+                    <thead className="ltr:text-left rtl:text-right">
+                        <tr>
+                            <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
+                                Theme Name
+                            </th>
+                            <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
+                                Created Date
+                            </th>
+                            <th className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
+                                Modifier Date
+                            </th>
                         </tr>
-                    ))}
-                </tbody>
-            </table>
+                    </thead>
+
+                    <tbody className="divide-y divide-gray-200">
+                        {themes.map((theme) => (
+                            <tr key={theme.id}>
+                                <td className="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
+                                    {theme.themeName}
+                                </td>
+                                <td className="whitespace-nowrap px-4 py-2 text-gray-700">
+                                    {theme.createDate}
+                                </td>
+                                <td className="whitespace-nowrap px-4 py-2 text-gray-700">
+                                    {theme.modifierDate}
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
         );
     }
 
@@ -41,7 +56,7 @@ export default class App extends Component {
                 <em>
                     Loading... Please refresh once the ASP.NET backend has
                     started. See{' '}
-                    <a href='https://aka.ms/jspsintegrationreact'>
+                    <a href="https://aka.ms/jspsintegrationreact">
                         https://aka.ms/jspsintegrationreact
                     </a>{' '}
                     for more details.
@@ -52,9 +67,9 @@ export default class App extends Component {
         );
 
         return (
-            <div>
-                <h1 id='tabelLabel'>Quiz Web</h1>
-                <p>
+            <div className="max-w-screen-md min-h-screen mx-auto">
+                <h1 className="text-4xl font-bold">Quiz Web</h1>
+                <p className="text-md mb-4">
                     This component demonstrates fetching data from the server.
                 </p>
                 {contents}
