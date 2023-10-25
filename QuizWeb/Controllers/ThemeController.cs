@@ -56,6 +56,16 @@ public class ThemeController : Controller
         };
         try
         {
+            var existingTheme = _services.GetAllTheme().Select(i => i.ThemeName);
+            foreach (var themeName in existingTheme)
+            {
+                if (themeName.ToLower().Contains(theme.ThemeName.ToLower()))
+                {
+                    _logger.LogError($"{theme.ThemeName} already exist");
+                    return StatusCode(500, "theme already exist");
+                }
+
+            }
             await _services.InsertNewTheme(theme);
             _logger.LogInformation($"success create new theme {theme.ThemeName}");
             return Ok();

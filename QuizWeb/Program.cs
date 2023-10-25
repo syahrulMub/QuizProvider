@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using QuizWeb.Data;
 using QuizWeb.DatabaseServices;
+using Microsoft.Extensions.Logging;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -34,6 +35,8 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
+
+app.UseDefaultFiles();
 
 app.MapControllers();
 
