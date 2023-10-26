@@ -28,7 +28,7 @@ public class ChapterController : Controller
                 var result = new DTOAllChapter
                 {
                     ChapterName = chapter.ChapterName,
-                    ChapterTheme = chapter.Theme.ThemeName,
+                    Theme = chapter.Theme.ThemeName,
                     ChapterDescription = chapter.Description,
                     ChapterModifier = chapter.ModifierDate,
                 };
@@ -43,12 +43,12 @@ public class ChapterController : Controller
         }
     }
     [HttpGet]
-    [Route("Chapter/{id}")]
+    [Route("{Id}")]
     public async Task<IActionResult> GetChapter(int chapterId)
     {
         try
         {
-            var result = _services.GetChapter(chapterId);
+            var result = await _services.GetChapter(chapterId);
             _logger.LogInformation($"success get chapter {chapterId}");
             return Json(result);
         }
@@ -59,6 +59,7 @@ public class ChapterController : Controller
         }
     }
     [HttpPost]
+    [Route("CreateChapter")]
     public async Task<IActionResult> CreateNewChapter([FromBody] NewChaper newChaper)
     {
         Chapter chapter = new()
@@ -89,6 +90,70 @@ public class ChapterController : Controller
             return StatusCode(500, "error while adding chapter : " + ex.Message);
         }
     }
+    [HttpPut]
+    [Route("UpdateChapter")]
+    public async Task<IActionResult> EditChapter(int chapterId, [FromBody] NewChaper newChapter)
+    {
+        try
+        {
+
+            var currentChapter = await _services.GetChapter(chapterId);
+            var existingChapter = _services.GetAllChapter().Select(i => i.ChapterName);
+            if (currentChapter != null)
+            {
+                currentChapter.ThemeId = newChapter.ThemeId;
+                currentChapter.ChapterName = newChapter.ChapterName;
+                currentChapter.Description = newChapter.Description;
+                currentChapter.ModifierDate = DateTime.Now;
+                foreach (var chap in existingChapter)
+                {
+                    if (chap.ToLower().Contains(newChapter.ChapterName.ToLower()))
+                    {
+                        _logger.LogError($"chapter with name {newChapter.ChapterName} already exist");
+                        return StatusCode(500, $"Chapter with name {newChapter.ChapterName} already exist");
+                    }
+                }
+                await _services.UpdateChapter(currentChapter);
+                _logger.LogInformation($"success adding updating chapter {newChapter.ChapterName}");
+                return Ok();
+            }
+            else
+            {
+                _logger.LogError("chapter not found");
+                return StatusCode(500, "chapter not found");
+            }
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError("error while updating chapter : " + ex.Message);
+            return StatusCode(500, "error while updating chapter : " + ex.Message);
+        }
+    }
+    [HttpDelete]
+    [Route("DeleteChapter")]
+    public async Task<IActionResult> DeleteChapter(int chapterId)
+    {
+        try
+        {
+            var existingChapter = await _services.GetChapter(chapterId);
+            if (existingChapter != null)
+            {
+                await _services.DeleteChapter(existingChapter);
+                _logger.LogInformation($"Chapter {existingChapter.ChapterName} successfully deleted");
+                return Ok($"Chapter {existingChapter.ChapterName} successfully deleted");
+            }
+            else
+            {
+                _logger.LogError("Chapter not found");
+                return StatusCode(500, "Chapter not found");
+            }
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError("error while deleting chapter : " + ex.Message);
+            return StatusCode(500, "error while deleting chapter : " + ex.Message);
+        }
+    }
 }
 
 public class NewChaper
@@ -102,7 +167,7 @@ public class NewChaper
 internal class DTOAllChapter
 {
     public string? ChapterName;
-    public string? ChapterTheme;
+    public string? Theme;
     public string? ChapterDescription;
     public DateTime? ChapterModifier;
 }

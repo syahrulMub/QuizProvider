@@ -46,6 +46,7 @@ public class ThemeController : Controller
         }
     }
     [HttpPost]
+    [Route("CreateTheme")]
     public async Task<IActionResult> CreateTheme([FromBody] string newThemeName)
     {
         Theme theme = new Theme
@@ -77,6 +78,7 @@ public class ThemeController : Controller
         }
     }
     [HttpPut]
+    [Route("UpdateTheme")]
     public async Task<IActionResult> UpdateTheme(int themeId, [FromBody] string updateThemeName)
     {
         try
@@ -103,6 +105,7 @@ public class ThemeController : Controller
         }
     }
     [HttpDelete]
+    [Route("DeleteTheme")]
     public async Task<IActionResult> DeleteTheme(int themeId)
     {
         try
