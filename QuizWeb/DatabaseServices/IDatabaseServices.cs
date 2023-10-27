@@ -17,4 +17,7 @@ public interface IDatabaseServices
     public Task<bool> InsertNewChapter(Chapter chapter);
     public Task<bool> UpdateChapter(Chapter chapter);
     public Task<bool> DeleteChapter(Chapter chapter);
+
+    //interface for user
+    public Task<User> GetUserData(string Email);
 }
