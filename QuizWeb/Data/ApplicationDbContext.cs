@@ -6,7 +6,7 @@ using QuizWeb.Models;
 
 namespace QuizWeb.Data;
 
-public class DatabaseContext : IdentityDbContext<User>
+public class DatabaseContext : DbContext
 {
     public DbSet<Quiz> Quizzes { get; set; }
     public DbSet<Chapter> Chapters { get; set; }

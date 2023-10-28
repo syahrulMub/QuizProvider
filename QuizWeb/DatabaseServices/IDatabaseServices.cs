@@ -19,5 +19,12 @@ public interface IDatabaseServices
     public Task<bool> DeleteChapter(Chapter chapter);
 
     //interface for user
-    public Task<User> GetUserData(string Email);
+    // public Task<User> GetUserData(string Email);
+
+    //interface for quiz
+    public IEnumerable<Quiz> GetAllQuiz();
+    public Task<Quiz?> GetQuiz(int? quizId);
+    public Task<bool> CreateNewQuiz(Quiz quiz);
+    public Task<bool> UpdateQuiz(Quiz quiz);
+    public Task<bool> DeleteQuiz(Quiz quiz);
 }
