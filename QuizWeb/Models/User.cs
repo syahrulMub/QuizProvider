@@ -7,7 +7,7 @@ namespace QuizWeb.Models;
 public class User : IdentityUser
 {
     [Required]
-    [MaxLength(20)]
+    [MaxLength(30)]
     public string CompleteName { get; set; } = null!;
     public string? PictureProfile { get; set; }
     public string? SchoolName { get; set; }

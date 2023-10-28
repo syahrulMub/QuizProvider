@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Identity;
 using QuizWeb.Constant;
 using QuizWeb.Models;
@@ -17,13 +18,26 @@ public class IdentityServices : IIdentityServices
     }
     public async Task<IdentityResult> RegisterUserAsync(RegisterViewModel model)
     {
-        var user = new User { CompleteName = model.CompleteName, Email = model.Email, SchoolName = model.SchoolName };
+        var user = new User
+        {
+            CompleteName = model.CompleteName,
+            UserName = model.CompleteName,
+            Email = model.Email,
+            PasswordHash = model.Password,
+            EmailConfirmed = true,
+            SchoolName = model.SchoolName,
+        };
         var result = await _userManager.CreateAsync(user, model.Password);
         if (result.Succeeded)
         {
             await _userManager.AddToRoleAsync(user, "user");
+            await _userManager.UpdateAsync(user);
+            return result;
         }
-        return result;
+        else
+        {
+            return null;
+        }
     }
     public async Task<SignInResult> LoginAsync(LoginViewModel model)
     {
@@ -36,6 +50,7 @@ public class IdentityServices : IIdentityServices
         if (user != null)
         {
             var role = await _userManager.GetRolesAsync(user);
+            // var token = await _userManager.GetAuthenticatorKeyAsync(user);
             var userData = new UserData
             {
                 Id = user.Id,
@@ -48,6 +63,20 @@ public class IdentityServices : IIdentityServices
         }
         return null;
     }
+    public async Task<bool> DeleteUser(string userId)
+    {
+        var user = await _userManager.FindByIdAsync(userId);
+        if (user != null)
+        {
+            await _userManager.DeleteAsync(user);
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
 }
 public class RegisterViewModel
 {
@@ -57,6 +86,7 @@ public class RegisterViewModel
     [EmailAddress]
     public string Email { get; set; } = null!;
     [Required]
+    public string UserName { get; set; } = null!;
     public string Password { get; set; } = null!;
     public string? SchoolName { get; set; }
     public SchoolClassEnum SchoolClass { get; set; }

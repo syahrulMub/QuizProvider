@@ -20,27 +20,45 @@ public class LoginController : Controller
     [Route("register")]
     public async Task<IActionResult> Register([FromBody] RegisterViewModel model)
     {
-        var result = await _identityServices.RegisterUserAsync(model);
-        if (result.Succeeded)
+        try
         {
+            await _identityServices.RegisterUserAsync(model);
+            // if (result.Succeeded)
+            // {
             return Ok(new { message = "Register successfull" });
+            // }
+            // else
+            // {
+            //     return Unauthorized(new { message = "login Failed" });
+            // }
         }
-        else
+        catch (Exception ex)
         {
-            return Unauthorized(new { message = "login Failed" });
+            _logger.LogError("error while process registered : " + ex.Message);
+            return StatusCode(500, "error while process registered : " + ex.Message);
         }
     }
+    [HttpPost]
+    [Route("login")]
     public async Task<IActionResult> LoginAsync([FromBody] LoginViewModel model)
     {
-        var result = await _identityServices.LoginAsync(model);
-        if (result != null)
+        try
         {
-            var userData = _identityServices.GetUserData(model.Email);
-            return Json(new { userData });
+            var result = await _identityServices.LoginAsync(model);
+            if (result != null)
+            {
+                var userData = _identityServices.GetUserData(model.Email);
+                return Json(new { userData });
+            }
+            else
+            {
+                return Unauthorized();
+            }
         }
-        else
+        catch (Exception ex)
         {
-            return Unauthorized();
+            _logger.LogError("error while processing LogIn : " + ex.Message);
+            return StatusCode(500, "error while processing LogIn : " + ex.Message);
         }
     }
 }
