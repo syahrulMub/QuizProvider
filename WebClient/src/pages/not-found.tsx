@@ -1,3 +1,7 @@
+import { Link } from 'react-router-dom';
+import { buttonVariants } from '@/components/ui/button';
+import { cn } from '@/lib/utils';
+
 export default function NotFound() {
     return (
         <div className="grid h-screen px-4 bg-white place-content-center">
@@ -26,6 +30,15 @@ export default function NotFound() {
                 </h1>
 
                 <p className="mt-4 text-gray-500">We can't find that page.</p>
+                <Link
+                    to="/"
+                    className={cn(
+                        buttonVariants({ variant: 'default' }),
+                        'mt-4'
+                    )}
+                >
+                    Back to Home
+                </Link>
             </div>
         </div>
     );
