@@ -5,7 +5,7 @@ VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuizWeb", "QuizWeb\QuizWeb.csproj", "{19C9E322-8AF2-4305-9422-CA51795ABDA7}"
 EndProject
-Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "QuizWeb.Client", "QuizWeb.Client\QuizWeb.Client.esproj", "{56767C0E-3F80-40F1-A9FA-3B46DD66DE9B}"
+Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "WebClient", "WebClient\WebClient.esproj", "{56767C0E-3F80-40F1-A9FA-3B46DD66DE9B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
