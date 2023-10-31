@@ -11,6 +11,7 @@ public class Quiz : BaseModel
     public int ChapterId { get; set; }
     public SchoolLevelEnum SchoolLevel { get; set; }
     public SchoolClassEnum SchoolClass { get; set; }
+    public int ManyTimesDone { get; set; }
 
     public virtual Chapter Chapter { get; set; } = null!;
 }

@@ -16,12 +16,10 @@ public class DatabaseContext : IdentityDbContext<User>
     {
 
     }
+
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);
-        builder.Entity<User>()
-        .Property(i => i.CompleteName)
-        .HasMaxLength(30);
 
         builder.Entity<User>()
         .Property(i => i.PictureProfile);

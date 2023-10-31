@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using QuizWeb.IdentityServices;
+using QuizWeb.Models;
 
 namespace QuizWeb.Controllers;
 
@@ -8,10 +10,12 @@ namespace QuizWeb.Controllers;
 [Route("api/[Controller]")]
 public class LoginController : Controller
 {
+    private readonly UserManager<User> _userManager;
     private readonly IIdentityServices _identityServices;
     private readonly ILogger<LoginController> _logger;
-    public LoginController(IIdentityServices identityServices, ILogger<LoginController> logger)
+    public LoginController(IIdentityServices identityServices, ILogger<LoginController> logger, UserManager<User> userManager)
     {
+        _userManager = userManager;
         _identityServices = identityServices;
         _logger = logger;
     }
@@ -22,15 +26,25 @@ public class LoginController : Controller
     {
         try
         {
-            await _identityServices.RegisterUserAsync(model);
-            // if (result.Succeeded)
-            // {
-            return Ok(new { message = "Register successfull" });
-            // }
-            // else
-            // {
-            //     return Unauthorized(new { message = "login Failed" });
-            // }
+            var user = new User
+            {
+                Email = model.Email,
+                UserName = model.UserName,
+                SchoolClass = model.SchoolClass,
+                SchoolLevel = model.SchoolLevel,
+                SchoolName = model.SchoolName,
+            };
+            var result = await _userManager.CreateAsync(user, model.Password);
+            if (result.Succeeded)
+            {
+                await _userManager.AddToRoleAsync(user, "user");
+                return Ok(new { message = "Registration successful" });
+            }
+            else
+            {
+                var errors = result.Errors.Select(e => e.Description);
+                return BadRequest(new { message = "Registration failed", errors = errors });
+            }
         }
         catch (Exception ex)
         {

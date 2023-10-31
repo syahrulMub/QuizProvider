@@ -16,27 +16,25 @@ public class IdentityServices : IIdentityServices
         _signInManager = signInManager;
 
     }
-    public async Task<IdentityResult> RegisterUserAsync(RegisterViewModel model)
+    public async Task<bool> RegisterUserAsync(RegisterViewModel model)
     {
         var user = new User
         {
-            CompleteName = model.CompleteName,
-            UserName = model.CompleteName,
             Email = model.Email,
-            PasswordHash = model.Password,
-            EmailConfirmed = true,
+            UserName = model.UserName,
+            SchoolClass = model.SchoolClass,
+            SchoolLevel = model.SchoolLevel,
             SchoolName = model.SchoolName,
         };
         var result = await _userManager.CreateAsync(user, model.Password);
         if (result.Succeeded)
         {
             await _userManager.AddToRoleAsync(user, "user");
-            await _userManager.UpdateAsync(user);
-            return result;
+            return true;
         }
         else
         {
-            return null;
+            return false;
         }
     }
     public async Task<SignInResult> LoginAsync(LoginViewModel model)
@@ -80,8 +78,6 @@ public class IdentityServices : IIdentityServices
 }
 public class RegisterViewModel
 {
-    [Required]
-    public string CompleteName { get; set; } = null!;
     [Required]
     [EmailAddress]
     public string Email { get; set; } = null!;

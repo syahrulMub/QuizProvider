@@ -9,8 +9,11 @@ using Microsoft.AspNetCore.Identity;
 using QuizWeb.Models;
 using System.Security.Principal;
 using QuizWeb.IdentityServices;
+using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Storage;
 
 var builder = WebApplication.CreateBuilder(args);
+
 
 // Add services to the container.
 builder.Services.AddMvc();
@@ -34,8 +37,16 @@ builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
+//add database from schema
+var DatabaseConfig = app.Configuration.GetConnectionString("DatabaseScriptPath");
+DatabaseConfiguration.ConfigureDatabase(app, DatabaseConfig);
+
 //add role in database
 SetRoleOnDatabase.CreateRoleOnDatabase(app);
+
+//add admin in database
+CreateAdminOnDatabase.CreateAdminRoleOnDatabase(app);
+
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -53,3 +64,5 @@ app.UseDefaultFiles();
 app.MapControllers();
 
 app.Run();
+
+
