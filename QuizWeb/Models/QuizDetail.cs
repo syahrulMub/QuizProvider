@@ -15,5 +15,6 @@ public class QuizDetail : BaseModel
     [Required]
     public QuestionTypeEnum QuestionType { get; set; }
     public string? Picture { get; set; }
+
     public virtual Quiz Quiz { get; set; } = null!;
 }

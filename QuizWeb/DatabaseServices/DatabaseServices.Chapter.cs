@@ -63,4 +63,18 @@ public partial class DatabaseServices
             return true;
         }
     }
+    public bool CheckAvailableNameOfChapter(string chapterName)
+    {
+        var result = _dbContext.Chapters
+                    .Select(i => i.ChapterName)
+                    .AsEnumerable();
+        foreach (var availableChapterName in result)
+        {
+            if (availableChapterName.ToLower().Contains(chapterName.ToLower()))
+            {
+                return false;
+            }
+        }
+        return true;
+    }
 }

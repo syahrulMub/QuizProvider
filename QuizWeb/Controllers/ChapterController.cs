@@ -72,17 +72,18 @@ public class ChapterController : Controller
         };
         try
         {
-            var existingChapter = _services.GetAllChapter().Select(i => i.ChapterName);
-            foreach (var chap in existingChapter)
+            var checkAvailableChapter = _services.CheckAvailableNameOfChapter(chapter.ChapterName);
+            if (!checkAvailableChapter)
             {
-                if (chap.ToLower().Contains(chapter.ChapterName.ToLower()))
-                {
-                    _logger.LogError("chapter already exist");
-                    return StatusCode(500, $"Chapter with name {chapter.ChapterName} already exist");
-                }
+                _logger.LogError($"{chapter.ChapterName} already exist");
+                return StatusCode(500, "chapter already exist");
             }
-            await _services.InsertNewChapter(chapter);
-            return Ok();
+            else
+            {
+                await _services.InsertNewChapter(chapter);
+                _logger.LogInformation($"success create new chapter {chapter.ChapterName}");
+                return Ok();
+            }
         }
         catch (Exception ex)
         {

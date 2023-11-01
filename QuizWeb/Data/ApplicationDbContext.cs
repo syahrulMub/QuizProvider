@@ -12,6 +12,8 @@ public class DatabaseContext : IdentityDbContext<User>
     public DbSet<Chapter> Chapters { get; set; }
     public DbSet<Theme> Themes { get; set; }
     public DbSet<QuizDetail> QuizDetails { get; set; }
+    public DbSet<AnswerQuizDetail> AnswerQuizDetails { get; set; }
+    public DbSet<UserResponse> UserResponses { get; set; }
     public DatabaseContext(DbContextOptions<DatabaseContext> options) : base(options)
     {
 

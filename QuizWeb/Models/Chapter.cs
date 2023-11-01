@@ -12,5 +12,6 @@ public class Chapter : BaseModel
     [Required]
     public string ChapterName { get; set; } = null!;
     public string? Description { get; set; }
+
     public virtual Theme Theme { get; set; } = null!;
 }

@@ -49,7 +49,8 @@ public class ThemeController : Controller
     [Route("CreateTheme")]
     public async Task<IActionResult> CreateTheme([FromBody] string newThemeName)
     {
-        Theme theme = new Theme
+        Theme theme = new()
+
         {
             ThemeName = newThemeName,
             CreateDate = DateTime.Now,
@@ -57,19 +58,18 @@ public class ThemeController : Controller
         };
         try
         {
-            var existingTheme = _services.GetAllTheme().Select(i => i.ThemeName);
-            foreach (var themeName in existingTheme)
+            var checkAvailableTheme = _services.CheckAvailableNameOfTheme(theme.ThemeName);
+            if (!checkAvailableTheme)
             {
-                if (themeName.ToLower().Contains(theme.ThemeName.ToLower()))
-                {
-                    _logger.LogError($"{theme.ThemeName} already exist");
-                    return StatusCode(500, "theme already exist");
-                }
-
+                _logger.LogError($"{theme.ThemeName} already exist");
+                return StatusCode(500, "theme already exist");
             }
-            await _services.InsertNewTheme(theme);
-            _logger.LogInformation($"success create new theme {theme.ThemeName}");
-            return Ok();
+            else
+            {
+                await _services.InsertNewTheme(theme);
+                _logger.LogInformation($"success create new theme {theme.ThemeName}");
+                return Ok();
+            }
         }
         catch (Exception ex)
         {
@@ -92,7 +92,7 @@ public class ThemeController : Controller
             else
             {
                 existingTheme.ThemeName = updateThemeName;
-                _logger.LogInformation($"success updating theme {existingTheme.Id}");
+                _logger.LogInformation($"success updating theme {existingTheme.ThemeName}");
                 await _services.UpdateTheme(existingTheme);
                 return Ok();
             }

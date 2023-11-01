@@ -30,6 +30,5 @@ public static class CreateAdminOnDatabase
             await userManager.CreateAsync(adminUser, adminPassword);
             await userManager.AddToRoleAsync(adminUser, "admin");
         }
-
     }
 }

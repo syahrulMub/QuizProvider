@@ -55,4 +55,18 @@ public partial class DatabaseServices
         await _dbContext.SaveChangesAsync();
         return true;
     }
+    public bool CheckAvailableNameOfTheme(string themeName)
+    {
+        var result = _dbContext.Themes
+                        .Select(i => i.ThemeName)
+                        .AsEnumerable();
+        foreach (var availablethemeName in result)
+        {
+            if (availablethemeName.ToLower().Contains(themeName.ToLower()))
+            {
+                return false;
+            }
+        }
+        return true;
+    }
 }
